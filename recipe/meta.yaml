@@ -6,22 +6,23 @@ package:
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/mrio_common_metadata-{{ version }}.tar.gz
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/mrio_common_metadata-{{ version }}.tar.gz
   sha256: 0d315da7262d3f064346325e4e6739d7cdec255c263d2ce7d54ae3e9732e757c
 
 build:
   noarch: python
-  script: {{ PYTHON }} -m pip install . -vv
-  number: 0
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  number: 1
 
 requirements:
   host:
     - pip
-    - python >=3.6
+    - python {{ python_min }}
+    - setuptools
   run:
     - openpyxl
     - pandas
-    - python >=3.6
+    - python >={{ python_min }}
     - pyxlsb
     - scipy
     - xlrd
@@ -33,6 +34,7 @@ test:
     - pip check
   requires:
     - pip
+    - python {{ python_min }}
 
 about:
   home: https://github.com/brightway-lca/mrio_common_metadata
